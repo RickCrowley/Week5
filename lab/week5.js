@@ -1,4 +1,5 @@
 // 1. signup for an api key https://weatherapi.com
+// ed55a1bb5c6d43b882121641210502
 // 2. find the "Chicago" city button using querySelector() and add a click event listener
 // 3. when event occurs (i.e. inside the listener function):
 //    a. find the forecast header (use the selector .forecast-header) and modify its innerHTML to `${location} Forecast`
@@ -27,6 +28,27 @@ function forecastHTML(dailyForecast) {
 
 // You may want to write other functions, but you don't need to!
 // All your code can go inside of this event listener ⬇️ ⬇️ ⬇️ ⬇️ ⬇️
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function () {
+  document.querySelector('#chicago-forecast').addEventListener('click', async function (event) {
+    event.preventDefault()
+
+    let location = 'Chicago'
+    document.querySelector('.forecast-header').innerHTML = `${location} Forecast`
+
+    let response = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=ed55a1bb5c6d43b882121641210502&q=${location}&days=3`)
+    let json = await response.json()
+    
+    let dailyForecastArray = json.forecast.forecastday
+
+    for (let i = 0; i < dailyForecastArray.length; i++){
+      let dailyForecast = dailyForecastArray[i]
+      let htmlForecast = forecastHTML(dailyForecast)
+      console.log(htmlForecast)
+      document.querySelector(`.forecast`).insertAdjacentHTML('beforeend', htmlForecast) 
+    }
+
+
+    
+  })
   // Your code ...
 })
